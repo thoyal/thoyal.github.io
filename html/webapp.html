@@ -1,0 +1,319 @@
+<!-- Tanner Hoyal | Section 001 | April 2026 -->
+<!-- Web App: Workout Tracker (created with AI assistance) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f4f0;
+            color: #2d2d2d;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #1b5e20;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-box {
+            background-color: #ffffff;
+            border: 1px solid #c8e6c9;
+            border-radius: 6px;
+            padding: 20px 25px;
+            max-width: 550px;
+            margin: 0 auto 30px auto;
+        }
+
+        .form-box h2 {
+            color: #2e7d32;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #c8e6c9;
+            padding-bottom: 8px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 3px;
+            color: #444;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 7px 10px;
+            margin-bottom: 12px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 8px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #addBtn {
+            background-color: #2e7d32;
+            color: white;
+        }
+
+        #addBtn:hover {
+            background-color: #1b5e20;
+        }
+
+        #clearBtn {
+            background-color: #cccccc;
+            color: #333;
+        }
+
+        #clearBtn:hover {
+            background-color: #aaaaaa;
+        }
+
+        .log-box {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .log-box h2 {
+            color: #2e7d32;
+            font-size: 18px;
+            border-bottom: 1px solid #c8e6c9;
+            padding-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #2e7d32;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 9px 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .error-msg {
+            color: #c62828;
+            font-size: 13px;
+            margin-top: -8px;
+            margin-bottom: 10px;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #e8f5e9 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="back-link" href="scratch.html">&larr; Back to Sports &amp; Fitness Page</a>
+
+    <h1>Workout Tracker</h1>
+    <p class="subtitle">Log your exercises and keep track of your progress!</p>
+
+    <!-- Input form -->
+    <div class="form-box">
+        <h2>Add an Exercise</h2>
+
+        <label for="exerciseName">Exercise Name</label>
+        <input type="text" id="exerciseName" placeholder="e.g. Bench Press">
+
+        <label for="sets">Sets</label>
+        <input type="number" id="sets" placeholder="e.g. 3" min="1">
+
+        <label for="reps">Reps</label>
+        <input type="number" id="reps" placeholder="e.g. 10" min="1">
+
+        <label for="weight">Weight (lbs) &mdash; enter 0 for bodyweight</label>
+        <input type="number" id="weight" placeholder="e.g. 135" min="0">
+
+        <div id="errorMsg" class="error-msg"></div>
+
+        <div class="btn-row">
+            <button id="addBtn" onclick="addExercise()">Add to Log</button>
+            <button id="clearBtn" onclick="clearLog()">Clear Log</button>
+        </div>
+    </div>
+
+    <!-- Workout log table -->
+    <div class="log-box">
+        <h2>Today's Workout Log</h2>
+        <table id="workoutTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Exercise</th>
+                    <th>Sets</th>
+                    <th>Reps</th>
+                    <th>Weight (lbs)</th>
+                    <th>Total Volume</th>
+                </tr>
+            </thead>
+            <tbody id="workoutBody">
+                <tr>
+                    <td colspan="6" class="empty-msg">No exercises logged yet. Add one above!</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var exercises = [];
+
+        function addExercise() {
+            var name = document.getElementById('exerciseName').value.trim();
+            var sets = parseInt(document.getElementById('sets').value);
+            var reps = parseInt(document.getElementById('reps').value);
+            var weight = parseFloat(document.getElementById('weight').value);
+            var errorMsg = document.getElementById('errorMsg');
+
+            // Simple validation
+            if (!name) {
+                errorMsg.textContent = 'Please enter an exercise name.';
+                return;
+            }
+            if (isNaN(sets) || sets < 1) {
+                errorMsg.textContent = 'Please enter a valid number of sets (at least 1).';
+                return;
+            }
+            if (isNaN(reps) || reps < 1) {
+                errorMsg.textContent = 'Please enter a valid number of reps (at least 1).';
+                return;
+            }
+            if (isNaN(weight) || weight < 0) {
+                errorMsg.textContent = 'Please enter a valid weight (0 or more).';
+                return;
+            }
+
+            errorMsg.textContent = '';
+
+            var exercise = {
+                name: name,
+                sets: sets,
+                reps: reps,
+                weight: weight,
+                volume: sets * reps * weight
+            };
+
+            exercises.push(exercise);
+            renderTable();
+            clearForm();
+        }
+
+        function clearForm() {
+            document.getElementById('exerciseName').value = '';
+            document.getElementById('sets').value = '';
+            document.getElementById('reps').value = '';
+            document.getElementById('weight').value = '';
+        }
+
+        function clearLog() {
+            exercises = [];
+            renderTable();
+        }
+
+        function renderTable() {
+            var tbody = document.getElementById('workoutBody');
+            tbody.innerHTML = '';
+
+            if (exercises.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">No exercises logged yet. Add one above!</td></tr>';
+                return;
+            }
+
+            var totalVolume = 0;
+
+            for (var i = 0; i < exercises.length; i++) {
+                var ex = exercises[i];
+                var row = document.createElement('tr');
+
+                var weightDisplay = ex.weight === 0 ? 'Bodyweight' : ex.weight + ' lbs';
+                var volumeDisplay = ex.weight === 0 ? '—' : ex.volume.toLocaleString() + ' lbs';
+
+                row.innerHTML =
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + ex.name + '</td>' +
+                    '<td>' + ex.sets + '</td>' +
+                    '<td>' + ex.reps + '</td>' +
+                    '<td>' + weightDisplay + '</td>' +
+                    '<td>' + volumeDisplay + '</td>';
+
+                tbody.appendChild(row);
+                totalVolume += ex.volume;
+            }
+
+            // Total row
+            var totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            totalRow.innerHTML =
+                '<td colspan="5" style="text-align: right;">Total Volume:</td>' +
+                '<td>' + totalVolume.toLocaleString() + ' lbs</td>';
+            tbody.appendChild(totalRow);
+        }
+    </script>
+
+</body>
+</html>

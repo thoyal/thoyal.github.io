@@ -1,0 +1,111 @@
+/* Tanner Hoyal | Section 001 | April 2026 */
+/* Stylesheet for the from-scratch sports & fitness page */
+/* No Bootstrap used on this page */
+
+body {
+    background-color: #e8f5e9;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #2d2d2d;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #1b5e20;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    color: #1b5e20;
+    font-family: Georgia, serif;
+    border-bottom: 1px solid #a5d6a7;
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+
+h3 {
+    color: #2e7d32;
+    font-family: Georgia, serif;
+}
+
+/* Div 1: Page header bar */
+.page-header {
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 15px 25px;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: Georgia, serif;
+}
+
+.page-header a {
+    color: #c8e6c9;
+    font-size: 14px;
+    margin-left: 20px;
+    font-weight: normal;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Div 2: Main content wrapper */
+.main-content {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 20px;
+}
+
+/* Div 3: Info / callout box */
+.info-box {
+    background-color: #c8e6c9;
+    border-left: 5px solid #2e7d32;
+    padding: 12px 16px;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #1b5e20;
+}
+
+/* Div 4: Media / embed section */
+.media-section {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.media-section iframe {
+    max-width: 100%;
+    border: none;
+}
+
+/* Workout list formatting */
+.workout-list {
+    line-height: 2;
+    font-size: 15px;
+}
+
+.workout-list li {
+    margin-bottom: 4px;
+}
+
+/* Page footer */
+.page-footer {
+    background-color: #1b5e20;
+    color: #c8e6c9;
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    margin-top: 40px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #a5d6a7;
+    border-radius: 4px;
+}
+
+.centered {
+    display: block;
+    margin: 0 auto;
+}
